@@ -91,8 +91,6 @@
 
                 $action = explode('@', $action);
 
-                require_once('./app/Http/Controllers/' . $action[0] . '.php');
-
                 $Controller_Name = $action[0];
 
                 $Controller = new $Controller_Name();

@@ -12,10 +12,12 @@ $vendorDir = dirname(dirname(__FILE__));
  */
 $baseDir = dirname($vendorDir);
 
-return array(
-    "Kernel\\App"                               => $baseDir . '/Kernel/App.php',
-    "Kernel\\Router"                            => $baseDir . '/Kernel/Router.php',
-    "Kernel\\View"                              => $baseDir . '/Kernel/View.php',
 
-    "app\\Http\\Controllers\\Dashboard\\Projects"          => $baseDir . '/app/Http/Controllers/Dashboard/Projects.php',
-);
+if(!file_exists($baseDir . '/settings/filePath_map.php')) {
+
+    return false;
+}
+
+$fileMap = require_once $baseDir . '/settings/filePath_map.php';
+
+return $fileMap;

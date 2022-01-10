@@ -11,7 +11,4 @@ $mulViewDir = array(
 );
 
 
-$section_extends = [
-    
-    "sections" => [],
-];
+

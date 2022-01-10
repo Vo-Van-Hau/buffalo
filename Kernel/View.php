@@ -1,22 +1,28 @@
 <?php 
 
+    class View {
+
+        /**
+         * @return Template-Object
+         */
+        public static function __template() {
+
+            global $template_v1;
+
+            return $template_v1;
+        }
+    }   
+
     /**
      *  @param String   $view_path: Path of file
-     *  @param Array    $dataInView: Data in view
+     *  @param Array    $args: Data in view
      *  @return Template 
      */
-    function view($view_path, $dataInView = []) {
+    function view(string $view_path, array $args = []) {
 
-        global $mulViewDir;
+        global $template_v1;
 
-        foreach($dataInView as $key_DataView => $value_DataView) {
-
-            ${$key_DataView} = $value_DataView;
-        }
-
-        $_lastDir = $mulViewDir["resources.views"] . $view_path;
-
-        return include($_lastDir);
+        $template_v1->__view($view_path, $args);   
     } 
 
     /**
@@ -31,32 +37,4 @@
 
         return include($_lastDir);
     }
-
-    function __extends($name) {
-
-        includeFile($name);
-    }
-
-    function __section(String $name = null) {
-
-        if(null === $name || empty($name)) {
-
-            return;
-        }
-
-        global $section_extends;
-
-        array_push($section_extends["sections"], $name);
-    }
-
-    function __yield($name = null) {
-
-        if(null === $name || empty($name)) {
-
-            return;
-        }
-
-        echo $name;
-    }
-
 ?>

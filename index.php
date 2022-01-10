@@ -16,5 +16,8 @@
     */
     require __DIR__ .'/vendor/autoload.php';
 
+    require __DIR__ .'/Kernel/ContextProvider.php';
+
     $App = new App();
+
 ?>
