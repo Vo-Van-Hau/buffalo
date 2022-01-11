@@ -35,6 +35,6 @@
 
         $_lastDir = $mulViewDir["resources.views"] . $file_path;
 
-        return include($_lastDir);
+        return require_once($_lastDir);
     }
 ?>
