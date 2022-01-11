@@ -99,7 +99,9 @@ class TemplateEngine {
 
         if (empty($this->__layout)) {
             
-            return $content;
+            echo $content;
+
+            return;
         }
 
         ob_clean();
