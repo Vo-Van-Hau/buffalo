@@ -1,15 +1,15 @@
 <?php 
 
-    class DB {
+    class Database {
 
         private static $conn;
 
         function __construct() {
 
-            self::$conn = require('./app/Models/initialConnect/connectDatabase.php');
+            self::$conn = require_once('./app/Models/initialConnect/connectDatabase.php');
         }
 
-        public static function whereData($compareKey, $syntaxKey, $compareValue) {
+        public function whereData($compareKey, $syntaxKey, $compareValue) {
 
             if(isset($compareKey) && isset($syntaxKey) && isset($compareValue)) {
 
@@ -64,8 +64,6 @@
 
             try {
 
-                require('./app/Models/initialConnect/connectDatabase.php');
-
                 $sql = "UPDATE {$table_Name} SET ";
     
                 $numItems = count($update_Block);
@@ -118,7 +116,6 @@
 
                 if(isset($table_Name) && isset($whereData)) {
 
-                    require('./app/Models/initialConnect/connectDatabase.php');
 
                     $sql = "DELETE FROM {$table_Name} " . $whereData;
     
@@ -140,7 +137,7 @@
         }
 
         // Return last unique ID of Record
-        public static function addBlockRunner($add_Block, $table_Name) {
+        public function addBlockRunner($add_Block, $table_Name) {
 
             try {
 
@@ -186,7 +183,7 @@
         //  $proField: is a array of field names in table of database
         //  $joinXS: is a array of join statement
         //  $mro: is boolean for geting One (FALSE) or get Many (TRUE) record
-        public static function selectData($table_Name, $proField = false, $whereData = false, $joinXS = false, $mro = true) {
+        public function selectData($table_Name, $proField = false, $whereData = false, $joinXS = false, $mro = true) {
 
             try {
 
@@ -250,6 +247,7 @@
         }
 
         public static function innerJoinZ($a, $b, $c, $d, $e, $f = false) {
+
             // $a: table A
             // $b: key_a
             // $c: key_c
@@ -293,7 +291,4 @@
                 return false;
             }
         }
-
     }
-
-?>
