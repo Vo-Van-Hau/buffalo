@@ -1,0 +1,13 @@
+{
+    "name": "buffalo/framework",
+    "authors": [
+        {
+            "name": "Vo Van Hau",
+            "email": "hauvo1709@gmail.com"
+        }
+    ],
+    "require": {
+
+        "php": "^7.3|^8.0"
+    }
+}

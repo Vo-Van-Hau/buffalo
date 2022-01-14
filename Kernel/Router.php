@@ -87,6 +87,9 @@
                 return false;
             }
 
+            /**
+             * Old versions
+             */
             if(is_string($action)) {
 
                 $action = explode('@', $action);

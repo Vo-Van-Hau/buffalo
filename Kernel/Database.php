@@ -22,7 +22,9 @@
             }
         }
 
-        // $cl: is a sub-array of array -> condition for query data
+        /**
+         *  @param array $compareKeycl: is a sub-array of array -> condition for query data
+         */
         public function whereDataMultiCondition($cl) {
 
             try {
@@ -182,9 +184,11 @@
             }
         }
 
-        //  $proField: is a array of field names in table of database
-        //  $joinXS: is a array of join statement
-        //  $mro: is boolean for geting One (FALSE) or get Many (TRUE) record
+        /**
+         * $proField: is a array of field names in table of database
+         * $joinXS: is a array of join statement
+         * $mro: is boolean for geting One (FALSE) or get Many (TRUE) record
+         */
         public function selectData($table_Name, $proField = false, $whereData = false, $joinXS = false, $mro = true) {
 
             try {

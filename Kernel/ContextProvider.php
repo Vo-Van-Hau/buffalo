@@ -2,7 +2,9 @@
 
 global $mulViewDir;
 
-$template_v1 = new TemplateEngine($mulViewDir["resources.views"]);
+$template_v1    = new TemplateEngine($mulViewDir["resources.views"]);
 
-$db = new Database();
+$db             = new Database();
+
+$request        = new Request();
 

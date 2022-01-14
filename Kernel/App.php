@@ -13,7 +13,8 @@ class App {
 
             echo $arrUrl;
 
-        }else {
+        }
+        else {
 
             require_once(PATH_ROOT . '/routes/web.php');
 

@@ -1,0 +1,29 @@
+<?php
+
+/**
+ * Task: Redirect to a different page in the current directory that was requested
+ * @param string $url
+ * 
+ */
+function redirect(string $path) {
+
+    global $URL;
+
+    $path = trim($path);
+
+    if(!isset($path) || !$path) {
+
+        return false;
+    }
+
+    if(substr($path, 0, 1) != "/") {
+
+        $path = "/" . $path;
+    }
+    
+    $redirect_to = $URL['protocol'] . $URL['host'] . $path;
+
+    header("Location: {$redirect_to}");
+
+    exit;
+}
