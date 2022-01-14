@@ -6,7 +6,7 @@
 
         function __construct() {
 
-            self::$conn = require_once('./app/Models/initialConnect/connectDatabase.php');
+            self::$conn = require_once('./Networking/initialConnect/connectDatabase.php');
         }
 
         public function whereData($compareKey, $syntaxKey, $compareValue) {
@@ -23,7 +23,7 @@
         }
 
         // $cl: is a sub-array of array -> condition for query data
-        public static function whereDataMultiCondition($cl) {
+        public function whereDataMultiCondition($cl) {
 
             try {
 
@@ -60,7 +60,7 @@
             }
         }
 
-        public static function updateData($update_Block, $table_Name, $whereData) {
+        public function updateData($update_Block, $table_Name, $whereData) {
 
             try {
 
@@ -110,7 +110,7 @@
             } 
         }
 
-        public static function deleteData($table_Name, $whereData) {
+        public function deleteData($table_Name, $whereData) {
 
             try {
 
@@ -136,7 +136,9 @@
             }
         }
 
-        // Return last unique ID of Record
+        /**
+         * Task: Insert & return last unique ID of Record
+         */
         public function addBlockRunner($add_Block, $table_Name) {
 
             try {
@@ -246,7 +248,7 @@
             }
         }
 
-        public static function innerJoinZ($a, $b, $c, $d, $e, $f = false) {
+        public function innerJoinZ($a, $b, $c, $d, $e, $f = false) {
 
             // $a: table A
             // $b: key_a

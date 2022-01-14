@@ -27,6 +27,16 @@ class DB {
         return $db->whereData($compareKey, $syntaxKey, $compareValue);
     }
 
+    /**
+     * @param array $cl 
+     * @return string SQL
+     */ 
+    public static function __whereDataMultiCondition(array $cl) {
+
+        global $db;
+
+        return $db->whereDataMultiCondition($cl);
+    }
 
     /**
      * @param string $table_Name
@@ -41,5 +51,46 @@ class DB {
         global $db;
 
         return $db->selectData($table_Name, $proField, $whereData, $joinXS, $mro);
+    }
+
+    /**
+     * @param array $update_Block
+     * @param string $table_Name
+     * @param string $whereData
+     * @return void()
+     */
+    public static function __updateData(array $update_Block, string $table_Name, string $whereData) {
+
+        global $db;
+
+        return $db->updateData($update_Block, $table_Name, $whereDatao);
+    }
+
+    /**
+     * @param string $table_Name
+     * @param string $whereData
+     * @return boolean
+     */
+    public static function __deleteData(string $table_Name, string $whereData) {
+
+        global $db;
+
+        return $db->deleteData($table_Name, $whereData);
+    }
+
+    /**
+     * @param string $a
+     * @param string $b
+     * @param string $c
+     * @param string $d
+     * @param string $e
+     * @param string $f
+     * @return string SQL
+     */
+    public static function __innerJoinZ($a, $b, $c, $d, $e, $f = fale) {
+
+        global $db;
+
+        return $db->innerJoinZ($a, $b, $c, $d, $e, $f);
     }
 }
