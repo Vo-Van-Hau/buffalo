@@ -5,13 +5,13 @@
  * @param string $url
  * 
  */
-function redirect(string $path) {
+function redirect(string $path = null) {
 
     global $URL;
 
     $path = trim($path);
 
-    if(!isset($path) || !$path) {
+    if(!isset($path) || !$path || is_null($path)) {
 
         return false;
     }
