@@ -104,13 +104,19 @@ class TemplateEngine {
             return;
         }
 
-        ob_clean();
+        /**
+         *  ob_clean();
+         */
+        if (ob_get_length() || ob_get_contents()) ob_clean();
 
         include_once $this->__resolvePath($this->__layout);
 
         $output = ob_get_contents();
 
-        ob_end_clean();
+        /**
+         *  ob_end_clean();
+         */
+        if (ob_get_length() || ob_get_contents()) ob_end_clean();
 
         echo $output;
     }
