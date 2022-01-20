@@ -7,12 +7,11 @@ class App {
         $arrUrl = $this->UrlProcessing();
 
         /**
-         *  <-----------------------------------------Handle Url----------------------------------------->
+         *  <-----------------------------------------Url Handler----------------------------------------->
          */
         if(isset($arrUrl) && gettype($arrUrl) === "string"){ 
 
             echo $arrUrl;
-
         }
         else {
 

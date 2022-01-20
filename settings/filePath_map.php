@@ -11,8 +11,8 @@ return array(
      * Support file
      */
     /**-------------Static files-------------*/
-    "Support\\Str"                          => $baseDir . '/Support/Str.php',
-    "Support\\Arr"                          => $baseDir . '/Support/Arr.php',
+    "Support\\Str"                              => $baseDir . '/Support/Str.php',
+    "Support\\Arr"                              => $baseDir . '/Support/Arr.php',
 
     /**
      * Core file
@@ -23,7 +23,8 @@ return array(
     "Kernel\\View"                              => $baseDir . '/Kernel/View.php',
     "Kernel\\Database"                          => $baseDir . '/Kernel/Database.php',
     "Kernel\\Request"                           => $baseDir . '/Kernel/Request.php',
-
+    "Kernel\\CookieCore"                        => $baseDir . '/Kernel/CookieCore.php',
+    "Kernel\\Encrypter"                         => $baseDir . '/Kernel/Encrypter.php',
 
     /**
      * Support file
@@ -32,6 +33,8 @@ return array(
     "Support\\DB"                               => $baseDir . '/Support/DB.php',
     "Support\\Http\\redirect"                   => $baseDir . '/Support/Http/redirect.php',
     "Support\\Http\\request"                    => $baseDir . '/Support/Http/request.php',
+    "Support\\Cookie"                           => $baseDir . '/Support/Cookie.php',
+    "Support\\Crypt"                            => $baseDir . '/Support/Crypt.php',
 
     /**
      * Build file

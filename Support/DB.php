@@ -2,6 +2,13 @@
 
 class DB {
 
+    public static $db;
+
+    public function __construct(Database $db) {
+
+        self::$db = $db;
+    }
+
     /**
      * @param array $add_Block
      * @param string $table_Name
@@ -9,9 +16,7 @@ class DB {
      */
     public static function __addBlockRunner(array $add_Block, string $table_Name) {
 
-        global $db;
-
-        return $db->addBlockRunner($add_Block, $table_Name);
+        return self::$db->addBlockRunner($add_Block, $table_Name);
     }
 
     /**
@@ -22,9 +27,7 @@ class DB {
      */
     public static function __whereData(string $compareKey, string $syntaxKey, string $compareValue) {
 
-        global $db;
-
-        return $db->whereData($compareKey, $syntaxKey, $compareValue);
+        return self::$db->whereData($compareKey, $syntaxKey, $compareValue);
     }
 
     /**
@@ -33,9 +36,7 @@ class DB {
      */ 
     public static function __whereDataMultiCondition(array $cl) {
 
-        global $db;
-
-        return $db->whereDataMultiCondition($cl);
+        return self::$db->whereDataMultiCondition($cl);
     }
 
     /**
@@ -48,9 +49,7 @@ class DB {
      */
     public static function __selectData(string $table_Name, $proField = false, $whereData = false, $joinXS = false, $mro = true) {
 
-        global $db;
-
-        return $db->selectData($table_Name, $proField, $whereData, $joinXS, $mro);
+        return self::$db->selectData($table_Name, $proField, $whereData, $joinXS, $mro);
     }
 
     /**
@@ -61,9 +60,7 @@ class DB {
      */
     public static function __updateData(array $update_Block, string $table_Name, string $whereData) {
 
-        global $db;
-
-        return $db->updateData($update_Block, $table_Name, $whereDatao);
+        return self::$db->updateData($update_Block, $table_Name, $whereDatao);
     }
 
     /**
@@ -73,9 +70,7 @@ class DB {
      */
     public static function __deleteData(string $table_Name, string $whereData) {
 
-        global $db;
-
-        return $db->deleteData($table_Name, $whereData);
+        return self::$db->deleteData($table_Name, $whereData);
     }
 
     /**
@@ -89,8 +84,6 @@ class DB {
      */
     public static function __innerJoinZ($a, $b, $c, $d, $e, $f = fale) {
 
-        global $db;
-
-        return $db->innerJoinZ($a, $b, $c, $d, $e, $f);
+        return self::$db->innerJoinZ($a, $b, $c, $d, $e, $f);
     }
 }

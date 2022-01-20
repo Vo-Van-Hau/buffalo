@@ -18,6 +18,6 @@
 
     require __DIR__ .'/Kernel/ContextProvider.php';
 
-    $App = new App();
+    $app = new App();
 
 ?>

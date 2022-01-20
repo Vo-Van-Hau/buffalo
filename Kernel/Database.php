@@ -6,7 +6,7 @@
 
         function __construct() {
 
-            self::$conn = require_once('./Networking/initialConnect/connectDatabase.php');
+            self::$conn = require_once('./networking/initialConnect/connectDatabase.php');
         }
 
         public function whereData($compareKey, $syntaxKey, $compareValue) {
