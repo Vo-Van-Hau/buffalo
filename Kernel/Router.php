@@ -62,7 +62,7 @@
 
             echo '404 - Not Found';
 
-            return;
+            return false;
         }
 
         public function __call_action_route($action, $params) {

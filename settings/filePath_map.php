@@ -23,7 +23,9 @@ return array(
     "Kernel\\View"                              => $baseDir . '/Kernel/View.php',
     "Kernel\\Database"                          => $baseDir . '/Kernel/Database.php',
     "Kernel\\Request"                           => $baseDir . '/Kernel/Request.php',
+    "Kernel\\Response"                          => $baseDir . '/Kernel/Response.php',
     "Kernel\\CookieCore"                        => $baseDir . '/Kernel/CookieCore.php',
+    "Kernel\\SessionCore"                       => $baseDir . '/Kernel/SessionCore.php',
     "Kernel\\Encrypter"                         => $baseDir . '/Kernel/Encrypter.php',
 
     /**
@@ -34,6 +36,7 @@ return array(
     "Support\\Http\\redirect"                   => $baseDir . '/Support/Http/redirect.php',
     "Support\\Http\\request"                    => $baseDir . '/Support/Http/request.php',
     "Support\\Cookie"                           => $baseDir . '/Support/Cookie.php',
+    "Support\\Session"                          => $baseDir . '/Support/Session.php',
     "Support\\Crypt"                            => $baseDir . '/Support/Crypt.php',
 
     /**

@@ -7,7 +7,7 @@ class Welcome {
         return view('pages/welcome.view.php', [
         
             "name" => "Buffalo Framework"
-        ]);
+        ]);      
     }
 
     public function __home() {
