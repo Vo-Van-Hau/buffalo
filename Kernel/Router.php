@@ -80,13 +80,6 @@
                 }
             }
 
-            if(is_callable($action)) {
-
-                call_user_func_array($action, $params);
-
-                return false;
-            }
-
             /**
              * Old versions
              */
@@ -115,6 +108,11 @@
 
                 $Controller = new $Controller_Name();
 
+                /**
+                 *  [Controller, Method] is equal to Controller::Method, i.e. a static method 
+                 * 
+                 *  Docs: https://www.php.net/manual/en/language.types.callable.php
+                 */
                 call_user_func_array([
 
                     $Controller, 
@@ -122,6 +120,13 @@
                     $action[1]
 
                 ], $params);
+
+                return false;
+            }
+
+            if(is_callable($action)) {
+
+                call_user_func_array($action, $params);
 
                 return false;
             }

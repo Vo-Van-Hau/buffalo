@@ -109,7 +109,7 @@ class SessionCore {
      *
      * @return mixed The removed value or null when it does not exist
      */
-    public function remove(string $name) {
+    public function remove(string $name = null) {
 
         if(is_null($name)) return null;
 

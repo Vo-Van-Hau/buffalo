@@ -18,4 +18,9 @@ class Session {
 
         self::$session->set($name, $value);
     }
+
+    public static function remove(string $name) {
+
+        self::$session->remove($name);
+    }
 }
