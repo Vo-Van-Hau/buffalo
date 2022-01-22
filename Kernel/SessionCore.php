@@ -9,22 +9,78 @@ class SessionCore {
      */
 
     /**
-     * Returns the session ID.
+     * Has a session started?
      *
-     * @return string
+     * @return bool
+     */
+    public function isActive() {
+
+        return \PHP_SESSION_ACTIVE === session_status();
+    }
+
+    /**
+     * Gets the session ID.
+     *
+     * @return string|false
      */
     public function getId() {
 
-        
+        /**
+         * session_id() returns the session id for the current session or the empty string ("") if there is no current session (no current session id exists). 
+         * On failure, false is returned.
+         * session_id() needs to be called before session_start() for that purpose.
+         */
+        return session_id();
     }
 
     /**
      * Sets the session ID.
+     * 
+     * @throws \LogicException
      */
-    public function setId(string $id) {
+    public function setId(string $id = null) {
 
-       
+        if(is_null($id)) return false;
+
+        if ($this->isActive()) {
+
+            throw new \LogicException('Cannot change the ID of an active session.');
+        }
+
+        session_id($id);
+
+        return true;
     }
+
+    /**
+     * Gets the session name.
+     *
+     * @return string
+     */
+    public function getName() {
+
+        return session_name();
+    }
+
+    /**
+     * Sets the session name.
+     *
+     * @throws \LogicException
+     */
+    public function setName(string $name = null) {
+
+        if(is_null($name)) return false;
+
+        if ($this->isActive()) {
+
+            throw new \LogicException('Cannot change the name of an active session.');
+        }
+
+        session_name($name);
+
+        return true;
+    }
+
     /**
      * Starts the session.
      *
@@ -80,6 +136,7 @@ class SessionCore {
      */
     public function all() {
 
+        return $_SESSION;
     }
 
     /**
@@ -98,10 +155,16 @@ class SessionCore {
 
     /**
      * Sets attributes.
+     * 
+     * @return mixed
      */
     public function replace(array $attributes) {
 
-        $this->getAttributeBag()->replace($attributes);
+        if(!is_array($attributes) || is_null($attributes)) return false;
+        
+        $_SESSION = $attributes;
+
+        return true;
     }
 
     /**
@@ -143,6 +206,15 @@ class SessionCore {
 
         // Finally, destroy the session.
         session_destroy();
+    }
+
+
+    /**
+     * Returns the number of attributes.
+     */
+    public function count() {
+
+        return count($this->all());
     }
 
     /**

@@ -2,22 +2,185 @@
 
     class Router {
 
-        private $routes;
+        /**
+         * The route collection instance.
+         */
+        protected $routes;
+
+        /**
+         * All of the short-hand keys for middlewares.
+         *
+         * @var array
+         */
+        protected $middleware = [];
+
+        /**
+         * All of the verbs supported by the router.
+         *
+         * @var string[]
+         */
+        public static $verbs = ['GET', 'HEAD', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'];
 
         function __construct() {
             
             $this->routes = [];
         }
 
-        public function get(string $url, $action) {
+        /**
+         * Register a new GET route with the router.
+         *
+         * @param  string  $uri
+         * @param  array|string|callable|null  $action
+         */
+        public function get(string $uri, $action = null) {
 
-            $this->__request($url, 'GET', $action);
+            $this->__request($uri, 'GET', $action);
         }
 
-        public function post(string $url, $action) {
+        /**
+         * Register a new POST route with the router.
+         *
+         * @param  string  $uri
+         * @param  array|string|callable|null  $action
+         */
+        public function post(string $uri, $action) {
 
-            $this->__request($url, 'POST', $action);
+            $this->__request($uri, 'POST', $action);
         }
+
+        
+        /**
+         * --------------------------------------------------------------End Build-Stack--------------------------------------------------------------
+         */
+
+        /**
+         * Add a Route instance to the collection.
+         */
+        public function add(Route $route){
+
+
+        }
+
+        /**
+         * Register a new PUT route with the router.
+         *
+         * @param  string  $uri
+         * @param  array|string|callable|null  $action
+         */
+        public function put($uri, $action = null) {
+
+            return $this->addRoute('PUT', $uri, $action);
+        }
+
+        /**
+         * Register a new PATCH route with the router.
+         *
+         * @param  string  $uri
+         * @param  array|string|callable|null  $action
+         */
+        public function patch($uri, $action = null) {
+
+            return $this->addRoute('PATCH', $uri, $action);
+        }
+
+        /**
+         * Register a new DELETE route with the router.
+         *
+         * @param  string  $uri
+         * @param  array|string|callable|null  $action
+         */
+        public function delete($uri, $action = null) {
+
+            return $this->addRoute('DELETE', $uri, $action);
+        }
+
+        /**
+         * Register a new OPTIONS route with the router.
+         *
+         * @param  string  $uri
+         * @param  array|string|callable|null  $action
+         * @return \Illuminate\Routing\Route
+         */
+        public function options($uri, $action = null) {
+
+            return $this->addRoute('OPTIONS', $uri, $action);
+        }
+
+        /**
+         * Add a route to the underlying route collection.
+         *
+         * @param  array|string  $methods
+         * @param  string  $uri
+         * @param  array|string|callable|null  $action
+         * @return \Illuminate\Routing\Route
+         */
+        public function addRoute($methods, $uri, $action) {
+
+            return $this->routes->add($this->createRoute($methods, $uri, $action));
+        }
+
+            /**
+         * Create a new route instance.
+         *
+         * @param  array|string  $methods
+         * @param  string  $uri
+         * @param  mixed  $action
+         * @return \Illuminate\Routing\Route
+         */
+        protected function createRoute($methods, $uri, $action) {
+
+            // If the route is routing to a controller we will parse the route action into
+            // an acceptable array format before registering it and creating this route
+            // instance itself. We need to build the Closure that will call this out.
+            if ($this->actionReferencesController($action)) {
+                $action = $this->convertToControllerAction($action);
+            }
+
+            $route = $this->newRoute(
+                $methods, $this->prefix($uri), $action
+            );
+
+            // If we have groups that need to be merged, we will merge them now after this
+            // route has already been created and is ready to go. After we're done with
+            // the merge we will be ready to return the route back out to the caller.
+            if ($this->hasGroupStack()) {
+                $this->mergeGroupAttributesIntoRoute($route);
+            }
+
+            $this->addWhereClausesToRoute($route);
+
+            return $route;
+        }
+
+        /**
+         * Create a new Route object.
+         *
+         * @param  array|string  $methods
+         * @param  string  $uri
+         * @param  mixed  $action
+         * @return \Illuminate\Routing\Route
+         */
+        public function newRoute($methods, $uri, $action) {
+
+            return (new Route($methods, $uri, $action))->setRouter($this)->setContainer($this->container);
+        }
+
+
+        /**
+         * Get or set the middlewares attached to the route.
+         *
+         * @param  array|string|null  $middleware
+         * @return $this|array
+         */
+        public function middlware($action, $params) {
+
+        }
+
+
+        /**
+         * --------------------------------------------------------------End Build-Stack--------------------------------------------------------------
+         */
+
 
         public function __request(string $url, string $method, $action) {
             

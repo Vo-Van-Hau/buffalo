@@ -17,7 +17,7 @@ $cookie         = new CookieCore();
 
 $session        = new SessionCore();
 
-$encrypter      = new Encrypter();
+$encrypter      = new Encrypter();    
 
 /**
  * Initialized Support Object
