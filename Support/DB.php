@@ -60,7 +60,7 @@ class DB {
      */
     public static function __updateData(array $update_Block, string $table_Name, string $whereData) {
 
-        return self::$db->updateData($update_Block, $table_Name, $whereDatao);
+        return self::$db->updateData($update_Block, $table_Name, $whereData);
     }
 
     /**
