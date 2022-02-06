@@ -13,6 +13,11 @@
 
             if(isset($compareKey) && isset($syntaxKey) && isset($compareValue)) {
 
+                if(is_string($compareValue)) {
+    
+                    $compareValue = "'{$compareValue}'";
+                }
+
                 return "WHERE {$compareKey} $syntaxKey $compareValue";
             }
 
@@ -36,7 +41,16 @@
                     for ($c = 0; $c < count($cl); $c++) { 
     
                         $tq = "";
-                        // --------------##cl[$c] is sub-array
+
+                        if(is_string($cl[$c][2])) {
+    
+                            $cl[$c][2] = "'{$cl[$c][2]}'";
+                        }
+
+                        /**
+                         * --------------##cl[$c] is sub-array
+                         * <$cl[$c][3]> is comparing-operator 
+                         */
                         if(isset($cl[$c][3])) {
     
                             $tq .= "{$cl[$c][0]} {$cl[$c][1]} {$cl[$c][2]} {$cl[$c][3]} "; 
