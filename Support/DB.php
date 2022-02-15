@@ -43,7 +43,7 @@ class DB {
      * @param string $table_Name
      * @param array $proField
      * @param string|boolean $whereData
-     * @param string|boolean $joinXS
+     * @param array|boolean $joinXS
      * @param boolean $mro
      * @return mixed Array || Object
      */
@@ -85,5 +85,15 @@ class DB {
     public static function __innerJoinZ($a, $b, $c, $d, $e, $f = fale) {
 
         return self::$db->innerJoinZ($a, $b, $c, $d, $e, $f);
+    }
+
+    /**
+     * --------------------------------------New version 
+     * 
+     * @param string $table
+     */
+    public static function table(string $table) {
+
+
     }
 }

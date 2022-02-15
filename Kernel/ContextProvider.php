@@ -5,9 +5,9 @@
  */
 session_start();
 
-global $mulViewDir;
+global $multipleViewDir;
 
-$template_v1    = new TemplateEngine($mulViewDir["resources.views"]);
+$template_v1    = new TemplateEngine($multipleViewDir["resources.views"]);
 
 $db             = new Database();
 

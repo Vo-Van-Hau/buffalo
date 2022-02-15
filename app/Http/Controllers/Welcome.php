@@ -3,7 +3,7 @@
 class Welcome {
 
     public function __index() {
-
+        
         return view('pages/welcome.view.php', [
         
             "name" => "Buffalo Framework"

@@ -103,6 +103,42 @@ class Str {
 
 
     /**
+     * @param string $length 
+     * @param string $type
+     */
+    public static function random($length = 10, $type = "string") {
+
+        $characters = null;
+
+        switch ($type) {
+
+            case "string":
+
+                $characters = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+                break;
+
+            case "int":
+                $characters = "0123456789";
+                break;
+
+            default:
+                $characters = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+                break;
+        }
+
+        $charactersLength = strlen($characters);
+
+        $randomString = '';
+
+        for ($i = 0; $i < $length; $i++) {
+
+            $randomString .= $characters[rand(0, $charactersLength - 1)];
+        }
+
+        return $randomString;
+    }
+
+    /**
      * @param string $string
      * @return Integer
      */

@@ -4,7 +4,7 @@ class App {
     
     function __construct(){
 
-        $arrUrl = $this->UrlProcessing();
+        $arrUrl = $this->URLHandler();
 
         /**
          *  <-----------------------------------------Url Handler----------------------------------------->
@@ -25,7 +25,7 @@ class App {
         }
     }
 
-    function UrlProcessing(){
+    function URLHandler() {
 
         $urlPage = '';
 

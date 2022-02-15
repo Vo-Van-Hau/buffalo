@@ -27,3 +27,14 @@ function redirect(string $path = null) {
 
     exit;
 }
+
+/**
+ * Task: Refresh a page
+ * @param Integer $delay
+ */
+function refresh($delay = 0) {
+
+    header("Refresh: $delay;"); 
+
+    exit;
+}

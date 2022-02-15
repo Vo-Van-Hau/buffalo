@@ -6,9 +6,15 @@
 
         function __construct() {
 
-            self::$conn = require_once('./networking/initialConnect/connectDatabase.php');
+            /**
+             *  Kernel/Database/PDO/Connection
+             */
+            self::$conn = Connection::connection();
         }
 
+        /**
+         * @param $syntaxKey
+         */
         public function whereData($compareKey, $syntaxKey, $compareValue) {
 
             if(isset($compareKey) && isset($syntaxKey) && isset($compareValue)) {

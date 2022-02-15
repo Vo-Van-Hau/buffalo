@@ -3,6 +3,5 @@
 function response() {
 
     global $request;
-
-    
 }
+

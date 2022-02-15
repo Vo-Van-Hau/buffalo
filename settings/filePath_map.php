@@ -29,6 +29,11 @@ return array(
     "Kernel\\Encrypter"                         => $baseDir . '/Kernel/Encrypter.php',
 
     /**
+     * Database
+     */
+    "Kernel\\Database\\PDO\\Connection"                         => $baseDir . '/Kernel/Database/PDO/Connection.php',
+
+    /**
      * Support file
      */
     /**-------------Dynamic files-------------*/

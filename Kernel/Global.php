@@ -5,9 +5,11 @@
  */
 $baseDir = dirname(dirname(__FILE__));
 
-$mulViewDir = array(
+$viewConfig = require_once($baseDir . "/config/view.php");
 
-    "resources.views" => $baseDir . "/resources/views/",
+$multipleViewDir = array(
+
+    "resources.views" => $baseDir . $viewConfig['view_dir'],
 );
 
 $URL = [
