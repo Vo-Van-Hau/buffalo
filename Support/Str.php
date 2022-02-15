@@ -103,6 +103,7 @@ class Str {
 
 
     /**
+     * Task: method generates a random string of the specified length
      * @param string $length 
      * @param string $type
      */
@@ -178,6 +179,44 @@ class Str {
         return strtoupper(trim($string));
     }
 
+
+    /**
+     * @param string $search
+     * @param string $replace
+     * @param string|array $subject
+     * @return string
+     */
+    public static function replace(string $search = null, string $replace = null, $subject = null) {
+
+        if(is_null($search) || is_null($replace) || is_null($subject)) return '';
+
+        return str_replace($search, $replace, $subject);
+    }
+
+    /**
+     * Task: method removes the given value or array of values from the string
+     * @param string $search
+     * @param string $subject
+     * @return string
+     */
+    public static function remove(string $search, string $subject) {
+
+        return self::replace($search, '', $subject);
+    }
+
+    /**
+     * Task: method reverses the given string:
+     * @param string $string
+     * @return string
+     */
+    public static function reverse(string $string = null) {
+
+        if(is_null($string)) return '';
+
+        return strrev($string);
+    }
+
+    //-------------------------------------Of Object-----------------------------------
     /**
      * @param string $string
      * @return Object
