@@ -216,6 +216,126 @@ class Str {
         return strrev($string);
     }
 
+    /**
+     * Task: method determines if the given string contains the given value. This method is case sensitive
+     * You may also pass an array of values to determine if the given string contains any of the values in the array
+     * 
+     * @param string $haystack
+     * @param string|array $needle
+     * @return boolean
+     */
+    public static function contains(string $haystack = null, $needle = null) {
+
+        if(is_null($haystack) || is_null($needle)) return false;
+
+        if(is_array($needle)) {
+
+            $i = 0;
+
+            $f = false;
+
+            while($i < count($needle)) {
+
+                if(!is_string($needle[$i])) {
+
+                    $f  = false;
+
+                    break;
+                }
+
+                if(empty($needle[$i])) {
+
+                    $f  = true;
+
+                    $i++;
+                    
+                    continue;
+                }
+
+                if (strpos($haystack, $needle[$i]) !== false) {
+
+                    $f  = true;
+
+                    break;
+                }
+
+                $i++;
+            }
+
+            return $f;
+        }
+
+        if(empty($needle)) {
+
+            return true;
+        }
+        
+        if (strpos($haystack, $needle) !== false) {
+
+            return true;
+        }
+
+        /**
+         * PHP version >=8
+         * return str_contains($haystack, $needle);
+         */
+
+        return false;
+    }
+
+
+    /**
+     * Task: method adds a single instance of the given value to a string if it does not already end with that value
+     * @param string $string
+     * @param string $end
+     * @return string
+     */
+    public static function finish(string $string = null, string $end = null) {
+
+        if(is_null($string)) {
+
+            return '';
+        }
+
+        if(is_null($end) || empty($end)) {
+
+            return $string;
+        }
+
+        if(substr($string, -1) == $end) {
+
+            return $string;
+        }
+
+        return $string . $end;
+    }
+
+    /**
+     * Task: method adds a single instance of the given value to a string if it does not already start with that value
+     * @param string $string
+     * @param string $start
+     * @return string
+     */
+    public static function start(string $string = null, string $start = null) {
+
+        if(is_null($string)) {
+
+            return '';
+        }
+
+        if(is_null($start) || empty($start)) {
+
+            return $string;
+        }
+
+        if(substr($string, 0, 1) == $start) {
+
+            return $string;
+        }
+
+        return $start . $string;
+    }
+
     //-------------------------------------Of Object-----------------------------------
     /**
      * @param string $string

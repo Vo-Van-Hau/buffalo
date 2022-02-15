@@ -9,6 +9,7 @@ class Cookie {
     public function __construct(Request $request, CookieCore $cookie) {
 
         self::$cookie   = $cookie;
+        
         self::$request  = $request;
     }
 
