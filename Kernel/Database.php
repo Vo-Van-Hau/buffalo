@@ -2,7 +2,20 @@
 
     class Database {
 
+        /**
+         * string
+         */
         private static $conn;
+
+        /**
+         * string
+         */
+        private $table;
+
+        /**
+         * array
+         */
+        protected $where;
 
         function __construct() {
 
@@ -10,6 +23,10 @@
              *  Kernel/Database/PDO/Connection
              */
             self::$conn = Connection::connection();
+
+            $this->table = null;
+
+            $this->where = array();
         }
 
         /**
@@ -250,6 +267,8 @@
 
                     $sql .= " {$whereData}";
                 }
+
+                return $sql;
     
                 $stmt =  self::$conn->prepare($sql);
     
@@ -316,5 +335,67 @@
 
                 return false;
             }
+        }
+
+        //--------------------------------------New version--------------------------------------************************
+
+        /**
+         * 
+         * @param string $table
+         * @return $this
+         */
+        public function table(string $table = null) {
+
+            if(is_null($table) || !is_string($table)) return false;
+
+            $this->table = $table;
+
+            $this->where = array();
+            
+            return $this;
+        }
+
+        /**
+         * 
+         */
+        public function get() {
+
+            if($this->table) {
+
+                return $this->selectData($this->table, false, false, false, true);
+            }
+
+            return false;
+        }
+
+        /**
+         * 
+         * @return $this
+         */
+        public function where($col = null, $value = null) {
+
+            if(is_null($col) || is_null($value)) return false;
+
+            $subWhere = [$col, "=", $value];
+
+            if(count($this->where) > 0) {
+
+                foreach($this->where as $where) {
+
+                    $where[3] = "AND";
+
+                    var_dump($where);
+                }   
+            }
+
+            array_push($this->where, $subWhere);
+
+            return $this;
+        }
+
+        public function first() {
+
+            // return $this->where;
+            // return $this->selectData($this->table, false, $this->whereDataMultiCondition($this->where), false, true);
         }
     }

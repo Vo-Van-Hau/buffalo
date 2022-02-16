@@ -88,12 +88,12 @@ class DB {
     }
 
     /**
-     * --------------------------------------New version 
+     * --------------------------------------New version--------------------------------------************************
      * 
      * @param string $table
      */
     public static function table(string $table) {
 
-
+        return self::$db->table($table);
     }
 }
