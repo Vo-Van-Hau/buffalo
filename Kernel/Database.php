@@ -17,6 +17,11 @@
          */
         protected $where;
 
+        /**
+         * array
+         */
+        protected $orderBy;
+
         function __construct() {
 
             /**
@@ -27,6 +32,8 @@
             $this->table = null;
 
             $this->where = array();
+
+            $this->orderBy = array();
         }
 
         /**
@@ -51,7 +58,8 @@
         }
 
         /**
-         *  @param array $compareKeycl: is a sub-array of array -> condition for query data
+         * @param array $compareKeycl: is a sub-array of array -> condition for query data
+         * @return string
          */
         public function whereDataMultiCondition($cl) {
 
@@ -99,13 +107,20 @@
             }
         }
 
-        public function updateData($update_Block, $table_Name, $whereData) {
+        /**
+         * @param array $update_Block
+         * @param string $table
+         * @param string $whereData
+         * @return int
+         */
+        public function updateData(array $update_Block, $table_Name, $whereData) {
 
             try {
 
                 $sql = "UPDATE {$table_Name} SET ";
     
                 $numItems = count($update_Block);
+
                 $i = 0;
         
                  foreach($update_Block as $BlockKey => $BlockValue) {
@@ -134,16 +149,18 @@
     
                 $sql .= $whereData;
     
+                // Prepare statement
                 $stmt = self::$conn->prepare($sql);
     
                 $stmt->setFetchMode(PDO::FETCH_ASSOC);
     
-                return $stmt->execute();
+                // execute the query
+                $stmt->execute();
+
+                return $stmt->rowCount();
             }
 
             catch(PDOException $err) {
-
-                $es = $err->getMessage();
 
                 return false;
             } 
@@ -236,11 +253,9 @@
     
                     $m = "";
     
-                    $q = 0;
                     foreach($proField as $proFKey => $proFieldValue) {
     
                         $m .= "$proFieldValue, ";
-    
                     }
     
                     // PHP substr_replace() function to remove the last character from a string in PHP.
@@ -267,9 +282,7 @@
 
                     $sql .= " {$whereData}";
                 }
-
-                return $sql;
-    
+  
                 $stmt =  self::$conn->prepare($sql);
     
                 $stmt->setFetchMode(PDO::FETCH_ASSOC);
@@ -356,7 +369,7 @@
         }
 
         /**
-         * 
+         * Task: retrieve the results of the query using the get method
          */
         public function get() {
 
@@ -376,26 +389,147 @@
 
             if(is_null($col) || is_null($value)) return false;
 
-            $subWhere = [$col, "=", $value];
-
-            if(count($this->where) > 0) {
-
-                foreach($this->where as $where) {
-
-                    $where[3] = "AND";
-
-                    var_dump($where);
-                }   
-            }
+            $subWhere = [$col, "=", $value, "AND"];
 
             array_push($this->where, $subWhere);
+
+            /**
+             * 
+             */
+            if(count($this->where) > 1) {
+
+                unset($this->where[count($this->where) - 1][3]);
+            }
 
             return $this;
         }
 
+        /**
+         * Add an "order by" clause to the query.
+         *
+         * @param  string  $direction
+         * @return $this
+         *
+         */
+        public function orderBy($column, $direction = 'asc') {
+
+            array_push($this->orderBy, [
+                $column, 
+                $direction
+            ]);
+
+            return $this;
+        }
+
+        /**
+         * Task: If you just need to retrieve a single row from a database table, you may use the DB facade's first method
+         */
         public function first() {
 
-            // return $this->where;
-            // return $this->selectData($this->table, false, $this->whereDataMultiCondition($this->where), false, true);
+            return $this->selectData($this->table, false, $this->whereDataMultiCondition($this->where), false, false);
+        }
+
+        /**
+         * Task: If you don't need an entire row, you may extract a single value from a record using the value method. 
+         * This method will return the value of the column directly
+         * @param string $col
+         * @return array|Object
+         */
+        public function value($col = null) {
+
+            if(is_null($col)) return false;
+            
+            return $this->selectData($this->table, [$col], $this->whereDataMultiCondition($this->where), false, false);
+        }
+
+        /**
+         * Task: In addition to inserting records into the database, the query builder can also update existing records using the update method. 
+         * The update method, like the insert method, accepts an array of column and value pairs indicating the columns to be updated. 
+         * The update method returns the number of affected rows. You may constrain the update query using where clauses
+         * 
+         * @param  array  $values
+         * 
+         * @return int
+         */
+        public function update(array $values) {
+
+            if(!is_array($values)) return false;
+
+            return $this->updateData($values, $this->table, $this->whereDataMultiCondition($this->where));
+        }
+        
+        // ----------------------------------------------------------------Aggregates----------------------------------------------------------------
+
+        /**
+         * Retrieve the "count" result of the query.
+         *
+         * @param  string $columns
+         * @return int
+         */
+        public function count($columns = '*') {
+
+            $sql = "SELECT COUNT({$columns}) FROM {$this->table}";
+
+            // Prepare statement
+            $stmt = self::$conn->prepare($sql);
+    
+            $stmt->setFetchMode(PDO::FETCH_ASSOC);
+
+            // execute the query
+            $stmt->execute();
+
+            $staffrow = $stmt->fetch(PDO::FETCH_NUM);
+            
+            return intval($staffrow[0]);
+        }
+
+        /**
+         * Retrieve the maximum value of a given column.
+         *
+         * @param string $column
+         * @return mixed
+         */
+        public function max($column = null) {
+
+            if(is_null($column) || is_null($this->table)) return false;
+
+            $sql = "SELECT MAX({$column}) FROM {$this->table}";
+
+            // Prepare statement
+            $stmt = self::$conn->prepare($sql);
+    
+            $stmt->setFetchMode(PDO::FETCH_ASSOC);
+
+            // execute the query
+            $stmt->execute();
+
+            $maximum = $stmt->fetch(PDO::FETCH_NUM);
+
+            return intval($maximum[0]);
+        }
+
+        /**
+         * Retrieve the minimum value of a given column.
+         *
+         * @param string $column
+         * @return mixed
+         */
+        public function min($column = null) {
+
+            if(is_null($column) || is_null($this->table)) return false;
+
+            $sql = "SELECT MIN({$column}) FROM {$this->table}";
+
+            // Prepare statement
+            $stmt = self::$conn->prepare($sql);
+    
+            $stmt->setFetchMode(PDO::FETCH_ASSOC);
+
+            // execute the query
+            $stmt->execute();
+
+            $minimum = $stmt->fetch(PDO::FETCH_NUM);
+
+            return intval($minimum[0]);
         }
     }
