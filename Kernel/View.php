@@ -31,9 +31,9 @@
      */
     function includeFile($file_path) {
 
-        global $mulViewDir;
+        global $multipleViewDir;
 
-        $_lastDir = $mulViewDir["resources.views"] . $file_path;
+        $_lastDir = $multipleViewDir["resources.views"] . $file_path;
 
         return require_once($_lastDir);
     }
