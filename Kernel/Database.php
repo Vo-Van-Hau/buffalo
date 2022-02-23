@@ -301,9 +301,14 @@
                 /**
                  *  -----------ORDER BY
                  */
-                $orderByStmt = $this->parseOrderBy($this->orderBy);
+               
 
-                $sql .= " " . $orderByStmt;
+                if(count($this->orderBy) != 0) {
+
+                    $orderByStmt = $this->parseOrderBy($this->orderBy);
+
+                    $sql .= " " . $orderByStmt;
+                }
   
                 $stmt =  self::$conn->prepare($sql);
     
