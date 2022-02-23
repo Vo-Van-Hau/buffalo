@@ -13,14 +13,39 @@
         private $table;
 
         /**
-         * array
+         * The where constraints for the query.
+         *
+         * @var array
          */
-        protected $where;
+        public $where = [];
 
         /**
-         * array
+         * The orderings for the query.
+         *
+         * @var array
          */
-        protected $orderBy;
+        protected $orderBy = [];
+
+        /**
+         * The columns that should be returned.
+         *
+         * @var array
+         */
+        public $columns = [];
+
+        /**
+         * All of the available clause operators.
+         *
+         * @var string[]
+         */
+        public $operators = [
+            '=', '<', '>', '<=', '>=', '<>', '!=', '<=>',
+            'like', 'like binary', 'not like', 'ilike',
+            '&', '|', '^', '<<', '>>',
+            'rlike', 'not rlike', 'regexp', 'not regexp',
+            '~', '~*', '!~', '!~*', 'similar to',
+            'not similar to', 'not ilike', '~~*', '!~~*',
+        ];
 
         function __construct() {
 
@@ -30,10 +55,6 @@
             self::$conn = Connection::connection();
 
             $this->table = null;
-
-            $this->where = array();
-
-            $this->orderBy = array();
         }
 
         /**
@@ -251,34 +272,12 @@
          * $joinXS: is a array of join statement
          * $mro: is boolean for geting One (FALSE) or get Many (TRUE) record
          */
-        public function selectData($table_Name, $proField = false, $whereData = false, $joinXS = false, $mro = true) {
+        public function selectData($table_Name, $whereData = false, $joinXS = false, $mro = true) {
 
             try {
-
-                $sql = "SELECT ";
     
-                if($proField && is_array($proField) && count($proField) != 0) {
-    
-                    $m = "";
-    
-                    foreach($proField as $proFKey => $proFieldValue) {
-    
-                        $m .= "$proFieldValue, ";
-                    }
-    
-                    // PHP substr_replace() function to remove the last character from a string in PHP.
-                    $m = substr_replace($m, "", -2);
-    
-                    $sql .= $m;
-    
-                }  
-                else {
-    
-                    $sql .= "*";
-                }
-    
-                $sql .= " FROM " . $table_Name;
-    
+                $sql = "SELECT " . $this->parseSelect($this->columns) . " FROM " . $table_Name;
+  
                 /**
                  *  -----------INNER JOIN 
                  */
@@ -301,8 +300,6 @@
                 /**
                  *  -----------ORDER BY
                  */
-               
-
                 if(count($this->orderBy) != 0) {
 
                     $orderByStmt = $this->parseOrderBy($this->orderBy);
@@ -317,8 +314,10 @@
                 $stmt->execute();
     
                 if($mro) {
+
+                    $result = $stmt->fetchAll();
                     
-                    return $stmt->fetchAll();
+                    return $result;
                 } 
     
                 return $stmt->fetch();
@@ -375,6 +374,8 @@
             }
         }
 
+        /*-------------------------------------------Parsing Data-----------------------------------------------------------*/
+
         /**
          * Task: convert array-OrderBy to string-OrderBy
          * @param array $values
@@ -403,6 +404,33 @@
             return "ORDER BY " . $sql;
         }
 
+        /**
+         * Task: convert array-Columns to string-Select-Columns
+         * @param array $columns
+         * @return string
+         */
+        public function parseSelect(array $columns) {
+
+            if(!isset($columns) && !is_array($columns)) return "";
+
+            if(count($columns) == 0) return " * ";
+
+            $sql = " ";
+
+            $c = 0;
+
+            foreach ($columns as  $column) {
+
+                $d = ", ";
+
+                $sql .= intval($c) == (count($columns) - 1) ? $column . " " : $column . $d;
+
+                $c++;
+            }
+
+            return $sql;
+        }
+
         //--------------------------------------New version--------------------------------------************************
 
         /**
@@ -428,10 +456,28 @@
 
             if($this->table) {
     
-                return $this->selectData($this->table, false, false, false, true);
+                return $this->selectData($this->table, $this->whereDataMultiCondition($this->where), false, true);
             }
 
             return false;
+        }
+
+        /**
+         * Set the columns to be selected.
+         *
+         * @param  array|mixed  $columns
+         * @return $this
+         */
+        public function select($columns = ['*']) {
+
+            $columns = is_array($columns) ? $columns : func_get_args();
+
+            foreach ($columns as $as => $column) {
+
+                $this->columns[] = $column;
+            }
+
+            return $this;
         }
 
         /**
@@ -521,7 +567,7 @@
          */
         public function first() {
 
-            return $this->selectData($this->table, false, $this->whereDataMultiCondition($this->where), false, false);
+            return $this->selectData($this->table, $this->whereDataMultiCondition($this->where), false, false);
         }
 
         /**
@@ -533,8 +579,10 @@
         public function value($col = null) {
 
             if(is_null($col)) return false;
+
+            $this->select($col);
             
-            return $this->selectData($this->table, [$col], $this->whereDataMultiCondition($this->where), false, false);
+            return $this->selectData($this->table, $this->whereDataMultiCondition($this->where), false, false);
         }
 
         /**
