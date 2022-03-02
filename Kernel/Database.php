@@ -34,6 +34,13 @@
         public $columns = [];
 
         /**
+         * The table joins for the query.
+         *
+         * @var array
+         */
+        public $joins = [];
+
+        /**
          * All of the available clause operators.
          *
          * @var string[]
@@ -271,24 +278,28 @@
 
         /**
          * $proField: is a array of field names in table of database
-         * $joinXS: is a array of join statement
          * $mro: is boolean for geting One (FALSE) or get Many (TRUE) record
          */
-        public function selectData($table_Name, $whereData = false, $joinXS = false, $mro = true) {
+        public function selectData($whereData = false, $mro = true) {
 
             try {
+
+                if(!isset($this->table)) return "";
     
-                $sql = "SELECT " . $this->parseSelect($this->columns) . " FROM " . $table_Name;
+                $sql = "SELECT " . $this->parseSelect($this->columns) . " FROM " . $this->table;
   
                 /**
                  *  -----------INNER JOIN 
                  */
-                if($joinXS && is_array($joinXS) == 1) {
+                // New version
+                if($this->joins && is_array($this->joins) && count($this->joins) > 0) {
     
-                    foreach($joinXS as $jXSI) {
+                    foreach($this->joins as $join) {
 
-                        $sql .= "{$jXSI}";
+                        $sql .= " $join ";
                     }
+
+                    $sql = trim($sql);
                 }
     
                 /**
@@ -458,7 +469,7 @@
 
             if($this->table) {
     
-                return $this->selectData($this->table, $this->whereDataMultiCondition($this->where), false, true);
+                return $this->selectData($this->whereDataMultiCondition($this->where), true);
             }
 
             return false;
@@ -569,7 +580,7 @@
          */
         public function first() {
 
-            return $this->selectData($this->table, $this->whereDataMultiCondition($this->where), false, false);
+            return $this->selectData($this->whereDataMultiCondition($this->where), false);
         }
 
         /**
@@ -584,7 +595,7 @@
 
             $this->select($col);
             
-            return $this->selectData($this->table, $this->whereDataMultiCondition($this->where), false, false);
+            return $this->selectData($this->whereDataMultiCondition($this->where), false);
         }
 
         /**
@@ -623,6 +634,34 @@
             $status = $this->deleteData($this->table, $where);
 
             return $status ? 1 : 0;
+        }
+
+        /**
+         * Add a join clause to the query.
+         *
+         * @param  string  $table
+         * @param  \Closure|string  $first
+         * @param  string|null  $operator
+         * @param  string|null  $second
+         * @param  string  $type
+         * @param  bool  $where
+         * @return $this
+         */
+        public function join($table, $first, $operator = null, $second = null, $type = 'INNER JOIN', $where = false) {
+
+            if(is_null($operator)) {
+
+                $operator = "="; 
+            }
+
+            if(is_array($this->joins)) {
+
+                $joinSQL = "{$type} {$table} ON {$first} {$operator} {$second}";
+
+                array_push($this->joins, $joinSQL);
+    
+                return $this;
+            }
         }
         
         // ----------------------------------------------------------------Aggregates----------------------------------------------------------------
