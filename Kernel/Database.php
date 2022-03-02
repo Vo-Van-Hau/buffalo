@@ -308,8 +308,6 @@
 
                     $sql .= " " . $orderByStmt;
                 }
-
-                return $sql; 
   
                 $stmt =  self::$conn->prepare($sql);
     
