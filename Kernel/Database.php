@@ -86,9 +86,11 @@
 
             try {
 
-                $temp_sql = "WHERE ";
-
                 if(is_array($cl) && !is_null($cl)) {
+
+                    if(count($cl) <= 0) return "";
+
+                    $temp_sql = "WHERE ";
     
                     for ($c = 0; $c < count($cl); $c++) { 
     
@@ -306,6 +308,8 @@
 
                     $sql .= " " . $orderByStmt;
                 }
+
+                return $sql; 
   
                 $stmt =  self::$conn->prepare($sql);
     
