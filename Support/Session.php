@@ -106,4 +106,12 @@ class Session {
 
         return self::$session->replace($attributes);
     }
+
+    /**
+     * @return boolean
+     */
+    public static function flash($name, $value) {
+
+        return self::$session->flash($name, $value);
+    }
 }

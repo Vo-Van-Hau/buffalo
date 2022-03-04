@@ -111,6 +111,27 @@ class SessionCore {
 
         if($this->has($name)) {
 
+            /**
+             * For flash session
+             */
+            if(is_array($_SESSION[$name]) && isset($_SESSION[$name]["type"]) && $_SESSION[$name]["type"] == "flash") {
+
+                $value = $_SESSION[$name]["value"];
+
+                /**
+                 * The flashed data will be deleted
+                 */
+                if($this->remove($name)) {
+
+                    return $value;
+                }
+
+                return null;
+            }
+
+            /**
+             * For normal session
+             */
             return $_SESSION[$name];
         }
 
@@ -121,12 +142,22 @@ class SessionCore {
      * Sets an attribute.
      *
      * @param mixed $value
+     * @return boolean
      */
     public function set(string $name = null, $value = null) {
         
-        if(is_null($name) || is_null($value)) return null;
+        try {
 
-        $_SESSION[$name] = $value;
+            if(is_null($name) || is_null($value)) return null;
+
+            $_SESSION[$name] = $value;
+
+            return true;
+        }
+        catch(Exception $error) {
+
+            return false;
+        }
     }
 
     /**
@@ -179,7 +210,11 @@ class SessionCore {
         if($this->has($name)) {
 
             unset($_SESSION[$name]);
+
+            return true;
         }
+
+        return null;
     }
 
     /**
@@ -187,7 +222,7 @@ class SessionCore {
      */
     public function clear(){
 
-       // Unset all of the session variables.
+        // Unset all of the session variables.
         $_SESSION = array();
 
         // If it's desired to kill the session, also delete the session cookie.
@@ -215,6 +250,26 @@ class SessionCore {
     public function count() {
 
         return count($this->all());
+    }
+
+    /**
+     * Sometimes you may wish to store items in the session for the next request. You may do so using the flash method.
+     * Data stored in the session using this method will be available immediately and during the subsequent HTTP request. 
+     * After the subsequent HTTP request, the flashed data will be deleted. Flash data is primarily useful for short-lived status messages
+     * 
+     * @param string $name
+     * @param string $value
+     * 
+     * @return boolean
+     */
+    public function flash($name = null, $value = null) {
+
+        if(is_null($name) && is_null($value)) return false;
+
+        return $this->set($name, [
+            "type" => "flash",
+            "value" => $value
+        ]);
     }
 
     /**
