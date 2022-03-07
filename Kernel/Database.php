@@ -458,6 +458,8 @@
             $this->table = $table;
 
             $this->where = array();
+
+            $this->joins = array();
             
             return $this;
         }
