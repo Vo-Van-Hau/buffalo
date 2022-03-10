@@ -597,7 +597,7 @@
 
             $this->select($col);
             
-            return $this->selectData($this->whereDataMultiCondition($this->where), false);
+            return $this->selectData($this->whereDataMultiCondition($this->where), false)[$col];
         }
 
         /**
