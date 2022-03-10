@@ -460,6 +460,8 @@
             $this->where = array();
 
             $this->joins = array();
+
+            $this->columns      = array();
             
             return $this;
         }
