@@ -5,20 +5,25 @@ class Request {
     /**
      * Retrieve an input item from the request.
      *
-     * @param  string|null  $key
+     * @param  string|null $name
      * @return mixed
      */
-    public function input($key = null) {
+    public function input($name = null) {
 
-        if(is_null($key)) return null;
+        if(is_null($name)) return null;
         
-        if(isset($_POST[$key]) && $_POST[$key]) {
+        if(isset($_POST[$name]) && $_POST[$name]) {
 
-            return trim($_POST[$key]);
+            return trim($_POST[$name]);
         }
-        if(isset($_GET[$key]) && $_GET[$key]) {
+        if(isset($_GET[$name]) && $_GET[$name]) {
 
-            return trim($_GET[$key]);
+            return trim($_GET[$name]);
+        }
+
+        if(isset($_FILES[$name]) && $_FILES[$name]) {
+
+            return $_FILES[$name];
         }
  
         return null;
