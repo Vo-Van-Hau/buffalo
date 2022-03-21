@@ -25,7 +25,10 @@ class Connection {
         
             $database_name = $database_engine['connections']['mysql']['database'];
     
-            $this->connection = new PDO("$driver:host=$database_host;dbname=$database_name", $database_username, $database_password);
+            $this->connection = new PDO("$driver:host=$database_host;dbname=$database_name;charset=utf8", $database_username, $database_password, array(
+                    PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"
+              )
+            );
         }
         
         catch (PDOException $e) {
